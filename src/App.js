@@ -1,7 +1,48 @@
 import './App.css';
 import Square from './Square';
 
+const [currentAttempt, setCurrentAttempt] = useState(1);
+const solution ='CLASE';
 function App() {
+
+  const [currentAttempt, setCurrentAttempt] = useState(1);
+  const [messageWinner, setMessageWinner] = useState("");
+
+  const guesses = ["     ", "     ","     " , "     ", "     "];
+  const handleSquareChange=(parameters) =>
+    {
+     
+      guesses[parameters.row-1]= replaceAt(guesses[parameters.row-1], parameters.column-1,parameters.letter);
+      let isAttempComplete=true;
+      for(let i=0;i<5;i++)
+      {
+        if(guesses[parameters.row-1].charAt(i)==" ")
+          {
+            isAttempComplete=false;
+            break;
+          }
+      }
+      if (isAttempComplete) 
+        {
+          if(guesses[parameters.row-1] == solution)
+          {
+            setMessageWinner("CONGRATULATIONS");
+            setCurrentAttempt(10); 
+          } else 
+          {
+            if (currentAttempt<5) 
+              {
+                setCurrentAttempt(currentAttempt+1);
+              } 
+              else
+              {
+                setMessageWinner("Game Over");
+                setCurrentAttempt(10); 
+              }
+          }
+ }
+
+
   return (
     <div className="App">
       <header className="App-header">
@@ -10,14 +51,15 @@ function App() {
         </p>
       </header>
       <p>
-        <div className='board'>
+      <div className='board'>
           <div id="row"  className='row' > 
-            <Square></Square>
-            <Square></Square>
-            <Square></Square>
-            <Square></Square>
-            <Square></Square>
+            <Square row="1" column="1" attempt={currentAttempt} textUpdate={(e) =>handleSquareChange(e)}></Square>
+            <Square row="1" column="2" attempt={currentAttempt} textUpdate={(e) =>handleSquareChange(e)}></Square>
+            <Square row="1" column="3" attempt={currentAttempt} textUpdate={(e) =>handleSquareChange(e)}></Square>
+            <Square row="1" column="4" attempt={currentAttempt} textUpdate={(e) =>handleSquareChange(e)}></Square>
+            <Square row="1" column="5" attempt={currentAttempt} textUpdate={(e) =>handleSquareChange(e)}></Square>
           </div>
+
           <div id="row" className='row'  > 
             <Square></Square>
             <Square></Square>
@@ -52,6 +94,5 @@ function App() {
     </div>
   );
 }
-
+}
 export default App;
-
